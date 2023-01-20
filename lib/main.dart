@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'screens/moviesList_screen.dart';
+import './screens/moviesList_screen.dart';
 import './screens/movieDetail_screen.dart';
 import './modules/movie/movie_provider.dart';
 

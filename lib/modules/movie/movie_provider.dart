@@ -11,7 +11,7 @@ class Movies with ChangeNotifier {
         poster: 'http:\/\/moviesapi.ir\/images\/tt0111161_poster.jpg',
         year: '1994',
         country: 'USA',
-        imdb_rating: '9.3',
+        imdbRating: '9.3',
         genres: [
           'Crime',
           'Drama'
@@ -27,7 +27,7 @@ class Movies with ChangeNotifier {
         poster: 'http:\/\/moviesapi.ir\/images\/tt0068646_poster.jpg',
         year: '1972',
         country: 'USA',
-        imdb_rating: '9.2',
+        imdbRating: '9.2',
         genres: [
           'Crime',
           'Drama'
@@ -43,7 +43,7 @@ class Movies with ChangeNotifier {
         poster: 'http:\/\/moviesapi.ir\/images\/tt0071562_poster.jpg',
         year: '1974',
         country: 'USA',
-        imdb_rating: '9.0',
+        imdbRating: '9.0',
         genres: [
           'Crime',
           'Drama'
@@ -59,7 +59,7 @@ class Movies with ChangeNotifier {
         poster: 'http:\/\/moviesapi.ir\/images\/tt0468569_poster.jpg',
         year: '2008',
         country: 'USA, Uk',
-        imdb_rating: '9.0',
+        imdbRating: '9.0',
         genres: [
           'Action',
           'Crime',
@@ -74,6 +74,14 @@ class Movies with ChangeNotifier {
 
   List<Movie> get items {
     return [..._items];
+  }
+
+  Movie findById(String id) {
+    return _items.firstWhere((movie) => movie.id == id);
+  }
+
+  List<Movie> get favoriteItems {
+    return _items.where((movie) => movie.isFavorite).toList();
   }
 
   void addMovie() {

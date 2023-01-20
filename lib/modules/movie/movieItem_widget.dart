@@ -1,26 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import '../../screens/movieDetail_screen.dart';
+import '../movie/movie_model.dart';
 
 class MovieItem extends StatelessWidget {
-  final String id;
-  final String title;
-  final String poster;
-
-  MovieItem(
-    this.id,
-    this.title,
-    this.poster,
-  );
-
   @override
   Widget build(BuildContext context) {
+    final movie = Provider.of<Movie>(context, listen: false);
+    // print('fav: ${movie.isFavorite}');
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
         child: GestureDetector(
           onTap: () {
             Navigator.of(context)
-                .pushNamed(MovieDetailScreen.routeName, arguments: id);
+                .pushNamed(MovieDetailScreen.routeName, arguments: movie.id);
             // Navigator.of(context).push(
             //   MaterialPageRoute(
             //     builder: (ctx) => MovieDetailScreen(title),
@@ -28,19 +24,27 @@ class MovieItem extends StatelessWidget {
             // );
           },
           child: Image.network(
-            poster,
+            movie.poster,
             fit: BoxFit.cover,
           ),
         ),
         footer: GridTileBar(
           backgroundColor: Colors.black54,
-          leading: IconButton(
-            icon: Icon(Icons.favorite),
-            color: Theme.of(context).accentColor,
-            onPressed: () {},
+          leading: Consumer<Movie>(
+            builder: (ctx, movie, child) => IconButton(
+              icon: Icon(
+                movie.isFavorite ? Icons.favorite : Icons.favorite_border,
+              ),
+              // label: child,
+              color: Theme.of(context).accentColor,
+              onPressed: () {
+                movie.toggleFavoriteStatus();
+              },
+            ),
+            // child: Text('never changes!'),
           ),
           title: Text(
-            title,
+            movie.title,
             textAlign: TextAlign.center,
           ),
         ),
