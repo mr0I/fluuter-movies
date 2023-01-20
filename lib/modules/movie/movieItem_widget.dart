@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../screens/movieDetail_screen.dart';
 
 class MovieItem extends StatelessWidget {
   final String id;
@@ -16,9 +17,20 @@ class MovieItem extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
-        child: Image.network(
-          poster,
-          fit: BoxFit.cover,
+        child: GestureDetector(
+          onTap: () {
+            Navigator.of(context)
+                .pushNamed(MovieDetailScreen.routeName, arguments: id);
+            // Navigator.of(context).push(
+            //   MaterialPageRoute(
+            //     builder: (ctx) => MovieDetailScreen(title),
+            //   ),
+            // );
+          },
+          child: Image.network(
+            poster,
+            fit: BoxFit.cover,
+          ),
         ),
         footer: GridTileBar(
           backgroundColor: Colors.black54,
