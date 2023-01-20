@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../models/movie.dart';
-import '../widgets/movie_item.dart';
+import '../modules/movie/movie_model.dart';
+import '../modules/movie/movieItem_widget.dart';
 
 class MoviesListScreen extends StatelessWidget {
   final List<Movie> loadedMovies = [
