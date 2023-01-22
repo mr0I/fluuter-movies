@@ -4,7 +4,7 @@ class Movie with ChangeNotifier {
   final String id;
   final String title;
   final String poster;
-  final String year;
+  final double year;
   final String country;
   final String imdbRating;
   final Object genres;

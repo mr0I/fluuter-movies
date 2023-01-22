@@ -9,7 +9,7 @@ class Movies with ChangeNotifier {
         id: '1',
         title: 'The Shawshank Redemption',
         poster: 'http:\/\/moviesapi.ir\/images\/tt0111161_poster.jpg',
-        year: '1994',
+        year: 1994,
         country: 'USA',
         imdbRating: '9.3',
         genres: [
@@ -25,7 +25,7 @@ class Movies with ChangeNotifier {
         id: '2',
         title: 'The Godfather',
         poster: 'http:\/\/moviesapi.ir\/images\/tt0068646_poster.jpg',
-        year: '1972',
+        year: 1972,
         country: 'USA',
         imdbRating: '9.2',
         genres: [
@@ -41,7 +41,7 @@ class Movies with ChangeNotifier {
         id: '3',
         title: 'The Godfather: Part II',
         poster: 'http:\/\/moviesapi.ir\/images\/tt0071562_poster.jpg',
-        year: '1974',
+        year: 1974,
         country: 'USA',
         imdbRating: '9.0',
         genres: [
@@ -57,7 +57,7 @@ class Movies with ChangeNotifier {
         id: '4',
         title: 'The Dark Knight',
         poster: 'http:\/\/moviesapi.ir\/images\/tt0468569_poster.jpg',
-        year: '2008',
+        year: 2008,
         country: 'USA, Uk',
         imdbRating: '9.0',
         genres: [

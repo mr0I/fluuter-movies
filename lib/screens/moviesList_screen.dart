@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../modules/movie/movieItem_widget.dart';
 import '../modules/movie/movie_provider.dart';
+import '../custom-widgets/badge.dart';
+import '../modules/cart/cart_provider.dart';
 
 enum FilterOptions { Favorites, All }
 
@@ -37,6 +39,13 @@ class _MoviesListScreenState extends State<MoviesListScreen> {
                   _showFavoritesOnly = false;
               });
             },
+          ),
+          Consumer<Cart>(
+            builder: (_, cart, ch) => Badge(
+              value: cart.itemCount.toString(),
+              child: ch,
+            ),
+            child: IconButton(icon: Icon(Icons.shopping_bag), onPressed: () {}),
           )
         ],
       ),

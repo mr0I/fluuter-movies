@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import './screens/moviesList_screen.dart';
 import './screens/movieDetail_screen.dart';
 import './modules/movie/movie_provider.dart';
+import './modules/cart/cart_provider.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,6 +15,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => Movies(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Cart(),
         ),
       ],
       child: MaterialApp(

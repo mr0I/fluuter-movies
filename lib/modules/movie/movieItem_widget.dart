@@ -3,11 +3,13 @@ import 'package:provider/provider.dart';
 
 import '../../screens/movieDetail_screen.dart';
 import '../movie/movie_model.dart';
+import '../cart/cart_provider.dart';
 
 class MovieItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final movie = Provider.of<Movie>(context, listen: false);
+    final cart = Provider.of<Cart>(context, listen: false);
     // print('fav: ${movie.isFavorite}');
 
     return ClipRRect(
@@ -42,6 +44,13 @@ class MovieItem extends StatelessWidget {
               },
             ),
             // child: Text('never changes!'),
+          ),
+          trailing: IconButton(
+            icon: Icon(Icons.shopping_cart),
+            color: Theme.of(context).accentColor,
+            onPressed: () {
+              cart.addItem(movie.id, movie.year, movie.title);
+            },
           ),
           title: Text(
             movie.title,
