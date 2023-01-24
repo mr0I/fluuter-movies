@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import './screens/moviesList_screen.dart';
 import './screens/movieDetail_screen.dart';
+import './screens/cart_screen.dart';
 import './modules/movie/movie_provider.dart';
 import './modules/cart/cart_provider.dart';
 
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         home: MoviesListScreen(),
         routes: {
           MovieDetailScreen.routeName: (ctx) => MovieDetailScreen(),
+          CartScreen.routeName: (ctx) => CartScreen(),
         },
       ),
     );

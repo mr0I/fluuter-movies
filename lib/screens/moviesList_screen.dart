@@ -5,6 +5,7 @@ import '../modules/movie/movieItem_widget.dart';
 import '../modules/movie/movie_provider.dart';
 import '../custom-widgets/badge.dart';
 import '../modules/cart/cart_provider.dart';
+import './cart_screen.dart';
 
 enum FilterOptions { Favorites, All }
 
@@ -45,7 +46,11 @@ class _MoviesListScreenState extends State<MoviesListScreen> {
               value: cart.itemCount.toString(),
               child: ch,
             ),
-            child: IconButton(icon: Icon(Icons.shopping_bag), onPressed: () {}),
+            child: IconButton(
+                icon: Icon(Icons.shopping_bag),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(CartScreen.routeName);
+                }),
           )
         ],
       ),
