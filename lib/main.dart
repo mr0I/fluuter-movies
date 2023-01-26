@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import './screens/moviesList_screen.dart';
-import './screens/movieDetail_screen.dart';
-import './screens/cart_screen.dart';
+import './modules/movie/moviesList_screen.dart';
+import './modules/movie/movieDetail_screen.dart';
+import './modules/cart/cart_screen.dart';
 import './modules/movie/movie_provider.dart';
 import './modules/cart/cart_provider.dart';
+import './modules/order/order_provider.dart';
+import './modules/order/orders_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -20,6 +22,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => Cart(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => Orders(),
+        ),
       ],
       child: MaterialApp(
         title: 'My Movies',
@@ -32,6 +37,7 @@ class MyApp extends StatelessWidget {
         routes: {
           MovieDetailScreen.routeName: (ctx) => MovieDetailScreen(),
           CartScreen.routeName: (ctx) => CartScreen(),
+          OrdersScreen.routeName: (ctx) => OrdersScreen(),
         },
       ),
     );

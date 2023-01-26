@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../modules/movie/movieItem_widget.dart';
-import '../modules/movie/movie_provider.dart';
-import '../custom-widgets/badge.dart';
-import '../modules/cart/cart_provider.dart';
-import './cart_screen.dart';
+import 'movieItem_widget.dart';
+import 'movie_provider.dart';
+import '../../widgets/badge.dart';
+import '../cart/cart_provider.dart';
+import '../cart/cart_screen.dart';
+import '../../widgets/appDrawer.dart';
 
 enum FilterOptions { Favorites, All }
 
@@ -54,6 +55,7 @@ class _MoviesListScreenState extends State<MoviesListScreen> {
           )
         ],
       ),
+      drawer: AppDrawer(),
       body: MoviesGrid(_showFavoritesOnly),
     );
   }
