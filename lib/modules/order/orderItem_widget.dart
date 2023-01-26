@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_movies/modules/movie/movie_model.dart';
 import 'package:intl/intl.dart';
 
 import '../order/order_provider.dart' as op;
