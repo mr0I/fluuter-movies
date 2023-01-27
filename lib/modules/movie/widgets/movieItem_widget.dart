@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../movie/movieDetail_screen.dart';
-import '../movie/movie_provider.dart';
-import '../cart/cart_provider.dart';
+import '../screens/movieDetail_screen.dart';
+import '../movie_provider.dart';
+import '../../cart/cart_provider.dart';
 
 class MovieItem extends StatelessWidget {
   @override

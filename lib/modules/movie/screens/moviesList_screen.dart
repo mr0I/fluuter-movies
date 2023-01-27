@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'movieItem_widget.dart';
-import 'movie_provider.dart';
-import '../../widgets/badge.dart';
-import '../cart/cart_provider.dart';
-import '../cart/cart_screen.dart';
-import '../../widgets/appDrawer.dart';
+import '../../movie/widgets/movieItem_widget.dart';
+import '../movie_provider.dart';
+import '../../../widgets/badge.dart';
+import '../../cart/cart_provider.dart';
+import '../../cart/cart_screen.dart';
+import '../../../widgets/appDrawer.dart';
 
 enum FilterOptions { Favorites, All }
 

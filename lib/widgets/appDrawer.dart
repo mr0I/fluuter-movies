@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../modules/order/orders_screen.dart';
+import '../modules/movie/screens/userMovies_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -27,6 +28,15 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context)
                   .pushReplacementNamed(OrdersScreen.routeName);
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: Text('Manage Movies'),
+            onTap: () {
+              Navigator.of(context)
+                  .pushReplacementNamed(UserMoviesScreen.routeName);
             },
           ),
         ],
