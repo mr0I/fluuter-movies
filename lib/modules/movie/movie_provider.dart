@@ -17,12 +17,18 @@ class Movie with ChangeNotifier {
     @required this.title,
     @required this.poster,
     @required this.year,
-    @required this.country,
-    @required this.imdbRating,
-    @required this.genres,
-    @required this.images,
+    this.country = '',
+    this.imdbRating = '',
+    this.genres,
+    this.images,
     this.isFavorite = false,
   });
+
+  Map<String, dynamic> toJson() => {
+        'title': title,
+        'poster': poster,
+        'year': year,
+      };
 
   void toggleFavoriteStatus() {
     isFavorite = !isFavorite;
