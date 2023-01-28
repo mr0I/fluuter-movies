@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import '../../movie/movie_provider.dart';
 
@@ -42,13 +43,25 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
 
   void _updateImageUrl() {
     if (!_imageUrlFocus.hasFocus) {
+      if ((!_imageUrlController.text.startsWith('http') &&
+              !_imageUrlController.text.startsWith('https')) ||
+          (!_imageUrlController.text.endsWith('png') &&
+              !_imageUrlController.text.endsWith('jpg') &&
+              !_imageUrlController.text.endsWith('jpeg'))) {
+        return;
+      }
+
       setState(() {});
     }
   }
 
   void _submitForm() {
+    final isValid = _form.currentState.validate();
+    if (!isValid) return;
     _form.currentState.save();
     print(_editedMovie.toJson());
+    Provider.of<Movies>(context, listen: false).addMovie(_editedMovie);
+    Navigator.of(context).pop();
   }
 
   @override
@@ -75,6 +88,10 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(_priceFocus);
                 },
+                validator: (value) {
+                  if (value.isEmpty) return 'Please provide some value';
+                  return null;
+                },
                 onSaved: (value) {
                   _editedMovie = Movie(
                     id: null,
@@ -91,6 +108,16 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
                   focusNode: _priceFocus,
                   onFieldSubmitted: (_) {
                     FocusScope.of(context).requestFocus(_descriptionFocus);
+                  },
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please provide some value';
+                    } else if (double.tryParse(value) == null) {
+                      return 'Please enter a valid number';
+                    } else if (double.parse(value) <= 0) {
+                      return 'Please enter a number grater than zero';
+                    }
+                    return null;
                   },
                   onSaved: (value) {
                     _editedMovie = Movie(
@@ -140,6 +167,19 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
                         focusNode: _imageUrlFocus,
                         onFieldSubmitted: (_) {
                           _submitForm();
+                        },
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Please provide some value';
+                          } else if (!value.startsWith('http') &&
+                              !value.startsWith('https')) {
+                            return 'Please enter a valid url';
+                          } else if (!value.endsWith('png') &&
+                              !value.endsWith('jpg') &&
+                              !value.endsWith('jpeg')) {
+                            return 'Please enter a valid format';
+                          }
+                          return null;
                         },
                         onSaved: (value) {
                           _editedMovie = Movie(

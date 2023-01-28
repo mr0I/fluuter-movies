@@ -117,8 +117,15 @@ class Movies with ChangeNotifier {
     return _items.where((movie) => movie.isFavorite).toList();
   }
 
-  void addMovie() {
-    // _items.add('value');
+  void addMovie(Movie movie) {
+    final newMovie = Movie(
+      id: DateTime.now().toString(),
+      title: movie.title,
+      poster: movie.poster,
+      year: movie.year,
+    );
+    _items.add(newMovie);
+    // _items.insert(0, newMovie);
     notifyListeners();
   }
 }
