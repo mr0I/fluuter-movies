@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../movie/movie_provider.dart';
@@ -25,10 +24,37 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
     year: 0,
   );
 
+  var _isInit = true;
+  var _initValues = {
+    'title': '',
+    'poster': '',
+    'year': '',
+  };
+
   @override
   void initState() {
     _imageUrlFocus.addListener(_updateImageUrl);
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      final movieId = ModalRoute.of(context).settings.arguments as String;
+      if (movieId != null) {
+        _editedMovie =
+            Provider.of<Movies>(context, listen: false).findById(movieId);
+        _initValues = {
+          'title': _editedMovie.title,
+          'poster': '',
+          'year': _editedMovie.year.toString(),
+        };
+        _imageUrlController.text = _editedMovie.poster;
+      }
+    }
+
+    _isInit = false;
+    super.didChangeDependencies();
   }
 
   @override
@@ -60,7 +86,12 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
     if (!isValid) return;
     _form.currentState.save();
     print(_editedMovie.toJson());
-    Provider.of<Movies>(context, listen: false).addMovie(_editedMovie);
+    if (_editedMovie.id != null) {
+      Provider.of<Movies>(context, listen: false)
+          .updateMovie(_editedMovie.id, _editedMovie);
+    } else {
+      Provider.of<Movies>(context, listen: false).addMovie(_editedMovie);
+    }
     Navigator.of(context).pop();
   }
 
@@ -83,6 +114,7 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
           child: ListView(
             children: <Widget>[
               TextFormField(
+                initialValue: _initValues['title'],
                 decoration: InputDecoration(labelText: 'title'),
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) {
@@ -94,7 +126,8 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
                 },
                 onSaved: (value) {
                   _editedMovie = Movie(
-                    id: null,
+                    id: _editedMovie.id,
+                    isFavorite: _editedMovie.isFavorite,
                     title: value,
                     poster: _editedMovie.poster,
                     year: _editedMovie.year,
@@ -102,6 +135,7 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
                 },
               ),
               TextFormField(
+                  initialValue: _initValues['year'],
                   decoration: InputDecoration(labelText: 'price'),
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.number,
@@ -121,7 +155,8 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
                   },
                   onSaved: (value) {
                     _editedMovie = Movie(
-                      id: null,
+                      id: _editedMovie.id,
+                      isFavorite: _editedMovie.isFavorite,
                       title: _editedMovie.title,
                       poster: _editedMovie.poster,
                       year: double.parse(value),
@@ -183,7 +218,8 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
                         },
                         onSaved: (value) {
                           _editedMovie = Movie(
-                            id: null,
+                            id: _editedMovie.id,
+                            isFavorite: _editedMovie.isFavorite,
                             title: _editedMovie.title,
                             poster: value,
                             year: _editedMovie.year,

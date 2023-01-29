@@ -128,4 +128,19 @@ class Movies with ChangeNotifier {
     // _items.insert(0, newMovie);
     notifyListeners();
   }
+
+  void updateMovie(String id, Movie newMovie) {
+    final movieIndex = _items.indexWhere((movie) => movie.id == id);
+    if (movieIndex >= 0) {
+      _items[movieIndex] = newMovie;
+      notifyListeners();
+    } else {
+      print('Error');
+    }
+  }
+
+  void deleteMovie(String id) {
+    _items.removeWhere((movie) => movie.id == id);
+    notifyListeners();
+  }
 }
