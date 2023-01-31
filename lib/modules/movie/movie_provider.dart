@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class Movie with ChangeNotifier {
   final String id;
@@ -118,15 +120,29 @@ class Movies with ChangeNotifier {
   }
 
   void addMovie(Movie movie) {
-    final newMovie = Movie(
-      id: DateTime.now().toString(),
-      title: movie.title,
-      poster: movie.poster,
-      year: movie.year,
-    );
-    _items.add(newMovie);
-    // _items.insert(0, newMovie);
-    notifyListeners();
+    final url = Uri.http('moviesapi.ir', '/api/v1/movies');
+    http
+        .post(url,
+            body: json.encode({
+              'title': movie.title,
+              'imdb_id': '1000',
+              'country': 'US',
+              'year': movie.year.toInt(),
+              'poster': movie.poster
+            }))
+        .then((response) {
+      final newMovie = Movie(
+        id: (json.decode(response.body)['id']).toString(),
+        title: movie.title,
+        poster: movie.poster,
+        year: movie.year,
+      );
+      _items.add(newMovie);
+      // _items.insert(0, newMovie);
+      notifyListeners();
+    }).catchError((e) {
+      print('Error: $e');
+    });
   }
 
   void updateMovie(String id, Movie newMovie) {

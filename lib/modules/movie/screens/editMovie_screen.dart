@@ -85,7 +85,7 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
     final isValid = _form.currentState.validate();
     if (!isValid) return;
     _form.currentState.save();
-    print(_editedMovie.toJson());
+    //print(_editedMovie.toJson());
     if (_editedMovie.id != null) {
       Provider.of<Movies>(context, listen: false)
           .updateMovie(_editedMovie.id, _editedMovie);
