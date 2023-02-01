@@ -82,7 +82,7 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
     }
   }
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
     final isValid = _form.currentState.validate();
     if (!isValid) return;
     _form.currentState.save();
@@ -98,10 +98,11 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
       });
       Navigator.of(context).pop();
     } else {
-      Provider.of<Movies>(context, listen: false)
-          .addMovie(_editedMovie)
-          .catchError((error) {
-        return showDialog<Null>(
+      try {
+        await Provider.of<Movies>(context, listen: false)
+            .addMovie(_editedMovie);
+      } catch (e) {
+        await showDialog<Null>(
           context: context,
           builder: (ctx) => AlertDialog(
             title: Text('Somthing went wrong!'),
@@ -115,12 +116,12 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
             ],
           ),
         );
-      }).then((_) {
+      } finally {
         setState(() {
           _isLoading = false;
         });
         Navigator.of(context).pop();
-      });
+      }
     }
   }
 

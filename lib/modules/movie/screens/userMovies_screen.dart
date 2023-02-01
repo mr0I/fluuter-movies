@@ -9,9 +9,13 @@ import '../../movie/screens/editMovie_screen.dart';
 class UserMoviesScreen extends StatelessWidget {
   static const routeName = '/user-movies';
 
+  Future<void> _refreshMovies(BuildContext context) async {
+    await Provider.of<Movies>(context, listen: false).fetchMovies();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final moviesObj = Provider.of<Movies>(context);
+    final moviesObj = Provider.of<Movies>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -25,21 +29,24 @@ class UserMoviesScreen extends StatelessWidget {
         ],
       ),
       drawer: AppDrawer(),
-      body: Padding(
-          padding: EdgeInsets.all(10),
-          child: ListView.builder(
-            itemBuilder: (_, i) => Column(
-              children: [
-                UserMovieItem(
-                  moviesObj.items[i].id,
-                  moviesObj.items[i].title,
-                  moviesObj.items[i].poster,
-                ),
-                Divider(),
-              ],
-            ),
-            itemCount: moviesObj.items.length,
-          )),
+      body: RefreshIndicator(
+        onRefresh: () => _refreshMovies(context),
+        child: Padding(
+            padding: EdgeInsets.all(10),
+            child: ListView.builder(
+              itemBuilder: (_, i) => Column(
+                children: [
+                  UserMovieItem(
+                    moviesObj.items[i].id,
+                    moviesObj.items[i].title,
+                    moviesObj.items[i].poster,
+                  ),
+                  Divider(),
+                ],
+              ),
+              itemCount: moviesObj.items.length,
+            )),
+      ),
     );
   }
 }
