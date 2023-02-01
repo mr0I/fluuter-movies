@@ -119,9 +119,9 @@ class Movies with ChangeNotifier {
     return _items.where((movie) => movie.isFavorite).toList();
   }
 
-  void addMovie(Movie movie) {
-    final url = Uri.http('moviesapi.ir', '/api/v1/movies');
-    http
+  Future<void> addMovie(Movie movie) {
+    final url = Uri.http('moviesapi.ir', '/api/v1/moviessss');
+    return http
         .post(url,
             body: json.encode({
               'title': movie.title,
@@ -140,8 +140,9 @@ class Movies with ChangeNotifier {
       _items.add(newMovie);
       // _items.insert(0, newMovie);
       notifyListeners();
-    }).catchError((e) {
-      print('Error: $e');
+    }).catchError((error) {
+      print('Error: $error');
+      throw error;
     });
   }
 
