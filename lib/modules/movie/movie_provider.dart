@@ -1,8 +1,9 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
+import '../../utils/http_exception.dart';
 
 class Movie with ChangeNotifier {
   final String id;
@@ -155,12 +156,8 @@ class Movies with ChangeNotifier {
 
       final loadedData = json.decode(response.body) as Map<String, dynamic>;
       final data = loadedData['data'];
-      // _items = data;
-      print(data.runtimeType);
-      // _items = json.decode(response.body['data']);
       final List<Movie> loadedMovies = [];
       data.forEach((value) {
-        print(value);
         loadedMovies.add(Movie(
           id: value['id'].toString(),
           title: value['title'],
@@ -176,9 +173,24 @@ class Movies with ChangeNotifier {
     }
   }
 
-  void updateMovie(String id, Movie newMovie) {
+  Future<void> updateMovie(String id, Movie newMovie) async {
     final movieIndex = _items.indexWhere((movie) => movie.id == id);
+
     if (movieIndex >= 0) {
+      // final url = Uri.http('moviesapi.ir', '/api/v1/movies');
+      // try {
+      //   await http.patch(url,
+      //       body: json.encode({
+      //         'title': newMovie.title,
+      //         'imdb_id': '1000',
+      //         'country': 'US',
+      //         'year': newMovie.year.toInt(),
+      //         'poster': newMovie.poster
+      //       }));
+      // } catch (error) {
+      //   print('Error: $error');
+      //   throw (error);
+      // }
       _items[movieIndex] = newMovie;
       notifyListeners();
     } else {
@@ -186,8 +198,19 @@ class Movies with ChangeNotifier {
     }
   }
 
-  void deleteMovie(String id) {
-    _items.removeWhere((movie) => movie.id == id);
+  Future<void> deleteMovie(String id) async {
+    final existingMovieIndex = _items.indexWhere((movie) => movie.id == id);
+    var existingMovie = _items[existingMovieIndex];
+    _items.removeAt(existingMovieIndex);
     notifyListeners();
+
+    // final url = Uri.http('moviesapi.ir', '/api/v1/movies');
+    // final res = await http.delete(url);
+    // if (res.statusCode >= 400) {
+    //   _items.insert(existingMovieIndex, existingMovie);
+    //   notifyListeners();
+    //   throw HttpException('Error in deleting!');
+    // }
+    // existingMovie = null;
   }
 }

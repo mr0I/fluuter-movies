@@ -13,6 +13,7 @@ class UserMovieItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scaffold = Scaffold.of(context);
     return ListTile(
       title: Text(title),
       leading: CircleAvatar(
@@ -34,8 +35,18 @@ class UserMovieItem extends StatelessWidget {
             IconButton(
                 icon: Icon(Icons.delete),
                 color: Theme.of(context).errorColor,
-                onPressed: () {
-                  Provider.of<Movies>(context, listen: false).deleteMovie(id);
+                onPressed: () async {
+                  try {
+                    await Provider.of<Movies>(context, listen: false)
+                        .deleteMovie(id);
+                  } catch (e) {
+                    // ignore: deprecated_member_use
+                    scaffold.showSnackBar(
+                      SnackBar(
+                        content: Text('Deleting failed!'),
+                      ),
+                    );
+                  }
                 }),
           ],
         ),

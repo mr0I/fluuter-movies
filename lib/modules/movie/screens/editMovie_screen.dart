@@ -91,12 +91,8 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
     });
     //print(_editedMovie.toJson());
     if (_editedMovie.id != null) {
-      Provider.of<Movies>(context, listen: false)
+      await Provider.of<Movies>(context, listen: false)
           .updateMovie(_editedMovie.id, _editedMovie);
-      setState(() {
-        _isLoading = false;
-      });
-      Navigator.of(context).pop();
     } else {
       try {
         await Provider.of<Movies>(context, listen: false)
@@ -116,13 +112,18 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
             ],
           ),
         );
-      } finally {
-        setState(() {
-          _isLoading = false;
-        });
-        Navigator.of(context).pop();
       }
+      // finally {
+      //   setState(() {
+      //     _isLoading = false;
+      //   });
+      //   Navigator.of(context).pop();
+      // }
     }
+    setState(() {
+      _isLoading = false;
+    });
+    Navigator.of(context).pop();
   }
 
   @override
