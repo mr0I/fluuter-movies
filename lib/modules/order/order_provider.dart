@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 
 import '../cart/cart_provider.dart';
 
@@ -23,14 +25,33 @@ class Orders with ChangeNotifier {
     return [..._orders];
   }
 
-  void addOrder(List<CartItem> cartmovies, double total) {
+  Future<void> addOrder(List<CartItem> cartmovies, double total) async {
+    final timestamp = DateTime.now();
+
+    // final url = Uri.http('moviesapi.ir', '/api/v1/orders');
+    // final res = await http.post(
+    //   url,
+    //   body: json.encode({
+    //     'amount': total,
+    //     'dateTime': timestamp.toIso8601String(),
+    //     'movies': cartmovies
+    //         .map((cm) => {
+    //               'id': cm.id,
+    //               'title': cm.title,
+    //               'quantity': cm.quantity,
+    //               'price': cm.price,
+    //             })
+    //         .toList()
+    //   }),
+    // );
     _orders.insert(
       0,
       OrderItem(
-        id: DateTime.now().toString(),
+        id: timestamp.toString(),
+        // id: (json.decode(res.body)['id']).toString(),
         amount: total,
         movies: cartmovies,
-        dateTime: DateTime.now(),
+        dateTime: timestamp,
       ),
     );
     notifyListeners();

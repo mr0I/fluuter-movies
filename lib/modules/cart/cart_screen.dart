@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_movies/modules/movie/movie_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'cart_provider.dart' show Cart;
@@ -41,25 +42,7 @@ class CartScreen extends StatelessWidget {
                     ),
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
-                  ElevatedButton(
-                    child: Text(
-                      'Order Now',
-                      style: TextStyle(color: Theme.of(context).primaryColor),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 15.0),
-                    ),
-                    onPressed: () {
-                      order.addOrder(
-                        cart.items.values.toList(),
-                        cart.totalAmount,
-                      );
-                      cart.clear();
-                    },
-                  )
+                  OrderButton(cart: cart, order: order)
                 ],
               ),
             ),
@@ -79,6 +62,53 @@ class CartScreen extends StatelessWidget {
           ))
         ],
       ),
+    );
+  }
+}
+
+class OrderButton extends StatefulWidget {
+  const OrderButton({
+    Key key,
+    @required this.cart,
+    @required this.order,
+  }) : super(key: key);
+
+  final Cart cart;
+  final Orders order;
+
+  @override
+  _OrderButtonState createState() => _OrderButtonState();
+}
+
+class _OrderButtonState extends State<OrderButton> {
+  var _isLoading = false;
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      child: Text(
+        'Order Now',
+        style: TextStyle(color: Theme.of(context).primaryColor),
+      ),
+      style: ElevatedButton.styleFrom(
+        primary: Colors.transparent,
+        shadowColor: Colors.transparent,
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+      ),
+      onPressed: (widget.cart.totalAmount <= 0 || _isLoading)
+          ? null
+          : () async {
+              setState(() {
+                _isLoading = true;
+              });
+              await Provider.of<Orders>(context, listen: false).addOrder(
+                widget.cart.items.values.toList(),
+                widget.cart.totalAmount,
+              );
+              setState(() {
+                _isLoading = false;
+              });
+              widget.cart.clear();
+            },
     );
   }
 }

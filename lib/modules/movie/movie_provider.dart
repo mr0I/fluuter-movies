@@ -34,9 +34,26 @@ class Movie with ChangeNotifier {
         'year': year,
       };
 
-  void toggleFavoriteStatus() {
+  _setFavValue(bool newValue) {
+    isFavorite = newValue;
+    notifyListeners();
+  }
+
+  Future<void> toggleFavoriteStatus() async {
+    final oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
+
+    final url = Uri.http('moviesapi.ir', '/api/v1/movies');
+    try {
+      final res = await http.patch(
+        url,
+        body: json.encode({'isFavorite': isFavorite}),
+      );
+      if (res.statusCode >= 400) _setFavValue(oldStatus);
+    } catch (e) {
+      _setFavValue(oldStatus);
+    }
   }
 }
 
@@ -155,6 +172,7 @@ class Movies with ChangeNotifier {
       final response = await http.get(url);
 
       final loadedData = json.decode(response.body) as Map<String, dynamic>;
+      if (loadedData == null) return;
       final data = loadedData['data'];
       final List<Movie> loadedMovies = [];
       data.forEach((value) {
@@ -200,7 +218,7 @@ class Movies with ChangeNotifier {
 
   Future<void> deleteMovie(String id) async {
     final existingMovieIndex = _items.indexWhere((movie) => movie.id == id);
-    var existingMovie = _items[existingMovieIndex];
+    //var existingMovie = _items[existingMovieIndex];
     _items.removeAt(existingMovieIndex);
     notifyListeners();
 
