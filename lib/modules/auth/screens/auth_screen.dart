@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../auth_provider.dart';
+import '../../../utils/http_exception.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -101,6 +102,23 @@ class _AuthCardState extends State<AuthCard> {
   };
   var _isLoading = false;
   final _passwordController = TextEditingController();
+  var errorMsg = '';
+
+  void _showErrorDialog(String message) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              title: Text('An Error Occured!'),
+              content: Text(message),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(ctx).pop();
+                    },
+                    child: Text('OK'))
+              ],
+            ));
+  }
 
   Future<void> _submit() async {
     if (!_formKey.currentState.validate()) {
@@ -111,13 +129,25 @@ class _AuthCardState extends State<AuthCard> {
     setState(() {
       _isLoading = true;
     });
-    if (_authMode == AuthMode.Login) {
-      // Log user in
-    } else {
-      // Sign user up
-      await Provider.of<Auth>(context, listen: false)
-          .signup(_authData['email'], _authData['password']);
+
+    try {
+      if (_authMode == AuthMode.Login) {
+        await Provider.of<Auth>(context, listen: false)
+            .signin(_authData['email'], _authData['password']);
+      } else {
+        await Provider.of<Auth>(context, listen: false)
+            .signup(_authData['email'], _authData['password']);
+      }
+    } on HttpException catch (error) {
+      errorMsg = 'authenticate failed!';
+      if (error.toString().contains('The user credentials were incorrect')) {
+        errorMsg = 'The user credentials were incorrect!';
+      }
+      _showErrorDialog(errorMsg);
+    } catch (error) {
+      errorMsg = 'Could not authenticate!';
     }
+
     setState(() {
       _isLoading = false;
     });
@@ -161,7 +191,6 @@ class _AuthCardState extends State<AuthCard> {
                     if (value.isEmpty || !value.contains('@')) {
                       return 'Invalid email!';
                     }
-                    return null;
                     return null;
                   },
                   onSaved: (value) {
