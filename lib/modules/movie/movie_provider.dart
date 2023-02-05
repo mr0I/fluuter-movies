@@ -3,8 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../../utils/http_exception.dart';
-
 class Movie with ChangeNotifier {
   final String id;
   final String title;

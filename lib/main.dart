@@ -5,12 +5,14 @@ import './modules/movie/screens/moviesList_screen.dart';
 import './modules/movie/screens/movieDetail_screen.dart';
 import './modules/movie/screens/userMovies_screen.dart';
 import './modules/movie/screens/editMovie_screen.dart';
+import './modules/auth/screens/auth_screen.dart';
 import './modules/cart/cart_screen.dart';
 import './modules/order/orders_screen.dart';
 
 import './modules/movie/movie_provider.dart';
 import './modules/cart/cart_provider.dart';
 import './modules/order/order_provider.dart';
+import './modules/auth/auth_provider.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,6 +21,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (_) => Auth(),
+        ),
         ChangeNotifierProvider(
           create: (_) => Movies(),
         ),
@@ -36,7 +41,7 @@ class MyApp extends StatelessWidget {
           accentColor: Colors.amber,
           fontFamily: 'Roboto',
         ),
-        home: MoviesListScreen(),
+        home: AuthScreen(),
         routes: {
           MovieDetailScreen.routeName: (ctx) => MovieDetailScreen(),
           CartScreen.routeName: (ctx) => CartScreen(),
