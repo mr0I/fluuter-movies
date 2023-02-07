@@ -8,7 +8,6 @@ import './modules/movie/screens/editMovie_screen.dart';
 import './modules/auth/screens/auth_screen.dart';
 import './modules/cart/cart_screen.dart';
 import './modules/order/orders_screen.dart';
-
 import './modules/movie/movie_provider.dart';
 import './modules/cart/cart_provider.dart';
 import './modules/order/order_provider.dart';
@@ -24,8 +23,13 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => Auth(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => Movies(),
+        ChangeNotifierProxyProvider<Auth, Movies>(
+          create: (BuildContext contextt) => Movies(
+            Provider.of<Auth>(contextt, listen: false).token,
+            [],
+          ),
+          update: (ctx, auth, oldMovies) =>
+              Movies(auth.token, oldMovies != null ? oldMovies.items : []),
         ),
         ChangeNotifierProvider(
           create: (_) => Cart(),
@@ -34,21 +38,23 @@ class MyApp extends StatelessWidget {
           create: (_) => Orders(),
         ),
       ],
-      child: MaterialApp(
-        title: 'My Movies',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          accentColor: Colors.amber,
-          fontFamily: 'Roboto',
+      child: Consumer<Auth>(
+        builder: (ctx, auth, _) => MaterialApp(
+          title: 'My Movies',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+            accentColor: Colors.amber,
+            fontFamily: 'Roboto',
+          ),
+          home: auth.isAuth ? MoviesListScreen() : AuthScreen(),
+          routes: {
+            MovieDetailScreen.routeName: (ctx) => MovieDetailScreen(),
+            CartScreen.routeName: (ctx) => CartScreen(),
+            OrdersScreen.routeName: (ctx) => OrdersScreen(),
+            UserMoviesScreen.routeName: (ctx) => UserMoviesScreen(),
+            EditMovieScreen.routeName: (ctx) => EditMovieScreen(),
+          },
         ),
-        home: AuthScreen(),
-        routes: {
-          MovieDetailScreen.routeName: (ctx) => MovieDetailScreen(),
-          CartScreen.routeName: (ctx) => CartScreen(),
-          OrdersScreen.routeName: (ctx) => OrdersScreen(),
-          UserMoviesScreen.routeName: (ctx) => UserMoviesScreen(),
-          EditMovieScreen.routeName: (ctx) => EditMovieScreen(),
-        },
       ),
     );
   }

@@ -124,6 +124,10 @@ class Movies with ChangeNotifier {
     //     ]),
   ];
 
+  final String authToken;
+
+  Movies(this.authToken, this._items);
+
   List<Movie> get items {
     return [..._items];
   }
@@ -167,7 +171,8 @@ class Movies with ChangeNotifier {
     final url = Uri.http('moviesapi.ir', '/api/v1/movies');
 
     try {
-      final response = await http.get(url);
+      final response = await http
+          .get(url, headers: {'Authorization': 'Bearer ' + authToken});
 
       final loadedData = json.decode(response.body) as Map<String, dynamic>;
       if (loadedData == null) return;
