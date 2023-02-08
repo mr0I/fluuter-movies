@@ -42,16 +42,16 @@ class Movie with ChangeNotifier {
     isFavorite = !isFavorite;
     notifyListeners();
 
-    final url = Uri.http('moviesapi.ir', '/api/v1/movies');
-    try {
-      final res = await http.patch(
-        url,
-        body: json.encode({'isFavorite': isFavorite}),
-      );
-      if (res.statusCode >= 400) _setFavValue(oldStatus);
-    } catch (e) {
-      _setFavValue(oldStatus);
-    }
+    // final url = Uri.http('moviesapi.ir', '/api/v1/movies');
+    // try {
+    //   final res = await http.patch(
+    //     url,
+    //     body: json.encode({'isFavorite': isFavorite}),
+    //   );
+    //   if (res.statusCode >= 400) _setFavValue(oldStatus);
+    // } catch (e) {
+    //   _setFavValue(oldStatus);
+    // }
   }
 }
 

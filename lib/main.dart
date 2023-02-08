@@ -12,6 +12,7 @@ import './modules/movie/movie_provider.dart';
 import './modules/cart/cart_provider.dart';
 import './modules/order/order_provider.dart';
 import './modules/auth/auth_provider.dart';
+import './screens/splash_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -46,7 +47,15 @@ class MyApp extends StatelessWidget {
             accentColor: Colors.amber,
             fontFamily: 'Roboto',
           ),
-          home: auth.isAuth ? MoviesListScreen() : AuthScreen(),
+          home: auth.isAuth
+              ? MoviesListScreen()
+              : FutureBuilder(
+                  future: auth.tryAutoLogin(),
+                  builder: (ctx, authSnapshot) =>
+                      authSnapshot.connectionState == ConnectionState.waiting
+                          ? SplashScreen()
+                          : AuthScreen(),
+                ),
           routes: {
             MovieDetailScreen.routeName: (ctx) => MovieDetailScreen(),
             CartScreen.routeName: (ctx) => CartScreen(),
