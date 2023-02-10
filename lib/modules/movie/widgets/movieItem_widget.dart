@@ -25,8 +25,10 @@ class MovieItem extends StatelessWidget {
             //   ),
             // );
           },
-          child: Image.network(
-            movie.poster,
+          child: FadeInImage(
+            placeholder:
+                AssetImage('assets/images/movie-poster-placeholder.png'),
+            image: NetworkImage(movie.poster),
             fit: BoxFit.cover,
           ),
         ),
