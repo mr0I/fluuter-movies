@@ -25,11 +25,14 @@ class MovieItem extends StatelessWidget {
             //   ),
             // );
           },
-          child: FadeInImage(
-            placeholder:
-                AssetImage('assets/images/movie-poster-placeholder.png'),
-            image: NetworkImage(movie.poster),
-            fit: BoxFit.cover,
+          child: Hero(
+            tag: movie.id,
+            child: FadeInImage(
+              placeholder:
+                  AssetImage('assets/images/movie-poster-placeholder.png'),
+              image: NetworkImage(movie.poster),
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         footer: GridTileBar(
