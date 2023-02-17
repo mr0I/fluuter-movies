@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../config/constants/app_constants.dart' as constants;
+import '../../config/config.dart' as config;
 
 import '../../utils/http_exception.dart';
 
@@ -42,7 +44,8 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> signin(String email, String password) async {
-    final url = Uri.http('moviesapi.ir', '/oauth/token');
+    final url = Uri.parse(config.APP.apiAddress + '/oauth/token');
+    // final url = Uri.http('moviesapi.ir', '/oauth/token');
 
     try {
       final res = await http.post(

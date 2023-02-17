@@ -1,0 +1,8 @@
+{
+  "myMovies": "My Movies",
+  "@myMovies": {
+    "description": "The conventional newborn programmer greeting"
+  },
+  "signIn": "signin",
+  "signUp": "signup"
+}

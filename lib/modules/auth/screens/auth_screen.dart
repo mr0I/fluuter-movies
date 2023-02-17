@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../auth_provider.dart';
 import '../../../utils/http_exception.dart';
+import '../../../config/config.dart' as config;
 
 enum AuthMode { Signup, Login }
 
@@ -194,6 +195,8 @@ class _AuthCardState extends State<AuthCard>
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+    final localizations = config.AppLocalizations.of(context);
+
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -273,8 +276,9 @@ class _AuthCardState extends State<AuthCard>
                   CircularProgressIndicator()
                 else
                   RaisedButton(
-                    child:
-                        Text(_authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP'),
+                    child: Text(_authMode == AuthMode.Login
+                        ? localizations.signIn
+                        : localizations.signUp),
                     onPressed: _submit,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
