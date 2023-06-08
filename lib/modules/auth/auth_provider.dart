@@ -45,17 +45,18 @@ class Auth with ChangeNotifier {
 
   Future<void> signin(String email, String password) async {
     final url = Uri.parse(config.APP.apiAddress + '/oauth/token');
-    // final url = Uri.http('moviesapi.ir', '/oauth/token');
+    // final url = Uri.https('moviesapi.ir', '/oauth/token');
+
+    print('url: $url');
 
     try {
-      final res = await http.post(
-        url,
-        body: {
-          'grant_type': 'password',
-          'username': email,
-          'password': password,
-        },
-      );
+      final res = await http.post(url, body: {
+        'grant_type': 'password',
+        'username': email,
+        'password': password,
+      });
+
+      print('res: $res');
 
       final resData = json.decode(res.body);
       if (resData['error'] != null) {
@@ -74,6 +75,7 @@ class Auth with ChangeNotifier {
       });
       prefs.setString('userData', userData);
     } catch (error) {
+      print(error);
       throw error;
     }
   }

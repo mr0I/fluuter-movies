@@ -12,5 +12,5 @@ abstract class APP {
   //         ? (!kIsWeb ? 'http://10.0.2.2' : 'http://127.0.0.1:3000')
   //         : serverAddr);
 
-  static const String apiAddress = 'http://moviesapi.ir';
+  static const String apiAddress = 'https://moviesapi.ir';
 }
